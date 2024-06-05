@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vulnerable Login</title>
+</head>
+<body>
+    <h1>Login</h1>
+    <form id="loginForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username"><br><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password"><br><br>
+        <button type="button" onclick="login()">Login</button>
+    </form>
+    <script>
+        // Function to escape HTML to prevent XSS
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, function (tag) {
+                const charsToReplace = {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    "'": '&#39;',
+                    '"': '&quot;'
+                };
+                return charsToReplace[tag] || tag;
+            });
+        }
+
+        function login() {
+            const username = escapeHTML(document.getElementById('username').value);
+            const password = escapeHTML(document.getElementById('password').value);
+
+            if (username === 'admin' && password === 'admin123') {
+                alert('Login successful!');
+            } else {
+                alert('Invalid credentials!');
+            }
+
+            document.body.innerHTML += `<p>Welcome, ${username}!</p>`;
+        }
+    </script>
+</body>
+</html>
